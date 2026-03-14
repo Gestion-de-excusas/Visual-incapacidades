@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Panel del Profesor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+<img src="uniminuto.png" class="logo">
+<h1>Panel de Gestión de Excusas</h1>
+
+<div class="estadisticas">
+
+<p>Total de excusas: <span id="totalExcusas">0</span></p>
+
+<p>Pendientes: <span id="pendientes">0</span></p>
+
+<p>Aprobadas: <span id="aprobadas">0</span></p>
+
+<p>Rechazadas: <span id="rechazadas">0</span></p>
+
+</div>
+
+
+<table border="1" class="tabla">
+
+<tr>
+<th>ID</th>
+<th>Estudiante</th>
+<th>Materia</th>
+<th>Fecha</th>
+<th>Motivo</th>
+<th>Estado</th>
+<th>Acciones</th>
+</tr>
+
+<tbody id="tablaExcusas"></tbody>
+
+</table>
+
+<br>
+
+<a href="index.html">Cerrar sesión</a>
+
+</div>
+
+
+<script>
+
+let excusas = JSON.parse(localStorage.getItem("excusas")) || [];
+
+let total = excusas.length;
+let pendientes = excusas.filter(e => e.estado === "Pendiente").length;
+let aprobadas = excusas.filter(e => e.estado === "Aprobada").length;
+let rechazadas = excusas.filter(e => e.estado === "Rechazada").length;
+
+document.getElementById("totalExcusas").textContent = total;
+document.getElementById("pendientes").textContent = pendientes;
+document.getElementById("aprobadas").textContent = aprobadas;
+document.getElementById("rechazadas").textContent = rechazadas;
+
+
+let tabla = document.getElementById("tablaExcusas");
+
+function guardarCambios(){
+localStorage.setItem("excusas", JSON.stringify(excusas));
+}
+
+excusas.forEach(function(e, index){
+
+let fila = "<tr>" +
+"<td>"+ e.id +"</td>" +
+"<td>"+ e.nombre +"</td>" +
+"<td>"+ e.materia +"</td>" +
+"<td>"+ e.fecha +"</td>" +
+"<td>"+ e.motivo +"</td>" +
+"<td>"+ e.estado +"</td>" +
+"<td>" +
+"<button onclick='aprobar("+index+")'>Aprobar</button>" +
+"<button onclick='rechazar("+index+")'>Rechazar</button>" +
+"</td>" +
+"</tr>";
+
+tabla.innerHTML += fila;
+
+});
+
+function aprobar(i){
+excusas[i].estado = "Aprobada";
+guardarCambios();
+location.reload();
+}
+
+function rechazar(i){
+excusas[i].estado = "Rechazada";
+guardarCambios();
+location.reload();
+}
+
+</script>

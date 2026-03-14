@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Formulario de Excusa</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<body>
+
+<div class="container">
+<img src="uniminuto.png" class="logo">
+<h1>Formulario de Excusa</h1>
+
+<form>
+
+<label>ID Estudiante</label><br> <input type="text" name="id_estudiante" required><br><br>
+<label>Nombre</label><br> <input type="text" name="nombre" required><br><br>
+<label>Correo</label><br> <input type="email" name="correo" required><br><br>
+<label>Materia</label><br> <input type="text" name="materia" required><br><br>
+<label>Fecha de ausencia</label><br> <input type="date" name="fecha" required><br><br>
+<label>Motivo de la excusa</label><br>
+
+<textarea name="motivo" rows="4"></textarea><br><br>
+
+<label>Subir evidencia</label><br> <input type="file" name="evidencia"><br><br>
+
+<button type="submit">Enviar Excusa</button>
+
+</form>
+
+</div>
+
+<script>
+
+document.querySelector("form").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+let excusa = {
+id: document.querySelector("input[name='id_estudiante']").value,
+nombre: document.querySelector("input[name='nombre']").value,
+materia: document.querySelector("input[name='materia']").value,
+fecha: document.querySelector("input[name='fecha']").value,
+motivo: document.querySelector("textarea[name='motivo']").value,
+estado: "Pendiente"
+};
+
+let excusas = JSON.parse(localStorage.getItem("excusas")) || [];
+
+excusas.push(excusa);
+
+localStorage.setItem("excusas", JSON.stringify(excusas));
+
+alert("Excusa enviada correctamente");
+
+document.querySelector("form").reset();
+
+});
+
+</script>
+
+</body>
+</html>
